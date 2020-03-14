@@ -9,7 +9,7 @@ namespace Termigram.Models
         #region Var
         private readonly Regex Regex;
 
-        private static readonly HashSet<char> Operators = new HashSet<char> { '*', '.', '[', ']', '(', ')', '^', '\\', '?' };
+        private static readonly HashSet<char> Operators = new HashSet<char> { '*', '[', ']', '(', ')' };
         #endregion
 
         #region Init
@@ -17,8 +17,9 @@ namespace Termigram.Models
 
         public MarkdownTag(params string[] tags) => Regex = new Regex(string.Join(string.Empty, tags.Where((x, i) => i % 2 == 0).Zip(tags.Where((x, i) => i % 2 == 1), (open, close) => 
         {
-            string openTag = string.Join(string.Empty, open.Select(c => Operators.Contains(c) ? $"\\{c}" : $"{c}"));
-            string closeTag = string.Join(string.Empty, close.Select(c => Operators.Contains(c) ? $"\\{c}" : $"{c}"));
+            string openTag = Shield(open);
+            string closeTag = Shield(close);
+
             return $@"{openTag}.*[^\\]{closeTag}";
         })), RegexOptions.Compiled | RegexOptions.Compiled);
 
@@ -26,6 +27,8 @@ namespace Termigram.Models
         #endregion
 
         #region Functions
+        private static string Shield(string tag) => string.Join(string.Empty, tag.Select(c => Operators.Contains(c) ? $"\\{c}" : $"{c}"));
+
         public bool IsMatch(string text) => Regex.IsMatch(text);
         #endregion
     }
