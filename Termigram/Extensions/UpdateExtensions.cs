@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace Termigram.Extensions
 {
@@ -99,5 +100,21 @@ namespace Termigram.Extensions
         }
 
         public static string GetUsername(this Update update) => TryGetUsername(update, out string? username) ? username : throw new ArgumentException(nameof(update));
+
+        public static bool TryGetMessage(this Update update, [NotNullWhen(true)]out Message? message)
+        {
+            message = update.Type switch
+            {
+                UpdateType.ChannelPost => update.ChannelPost,
+                UpdateType.EditedChannelPost => update.EditedChannelPost,
+                UpdateType.EditedMessage => update.EditedMessage,
+                UpdateType.Message => update.Message,
+                _ => default
+            };
+
+            return message is { };
+        }
+
+        public static Message GetMessage(this Update update) => TryGetMessage(update, out Message? message) ? message : throw new ArgumentException(nameof(update));
     }
 }
