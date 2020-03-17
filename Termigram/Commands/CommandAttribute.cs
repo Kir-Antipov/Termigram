@@ -6,17 +6,13 @@ namespace Termigram.Commands
     public class CommandAttribute : Attribute
     {
         #region Var
-        public string Name { get; }
+        public string? Name { get; }
         #endregion
 
         #region Init
-        public CommandAttribute(string name) => Name = name;
-        #endregion
+        public CommandAttribute() => Name = default;
 
-        #region Functions
-        public override string ToString() => Name;
-        public override int GetHashCode() => HashCode.Combine(base.GetHashCode(), Name);
-        public override bool Equals(object? obj) => obj is CommandAttribute attribute && Name == attribute.Name;
+        public CommandAttribute(string name) => Name = name;
         #endregion
     }
 }
