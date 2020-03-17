@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
+using Termigram.CommandInfos;
 using Termigram.Commands;
 using Termigram.Options;
 
@@ -20,7 +21,8 @@ namespace Termigram.Bot
         public IOptions Options { get; }
         public ITelegramBotClient Client { get; }
 
-        protected readonly MethodInfo[] Commands;
+        protected readonly ICommandInfo[] Commands;
+        protected readonly ICommandInfo? DefaultCommand;
         #endregion
 
         #region Init
@@ -28,7 +30,7 @@ namespace Termigram.Bot
         {
             Options = options;
             Client = options.Proxy is { } ? new TelegramBotClient(options.Token, options.Proxy) : new TelegramBotClient(options.Token, options.HttpClient);
-            Commands = options.CommandExtractor.ExtractCommands(GetType());
+            Commands = options.CommandExtractor.ExtractCommands(GetType(), out DefaultCommand);
         }
         #endregion
 
@@ -50,13 +52,13 @@ namespace Termigram.Bot
             if (!TryParseCommand(e.Update, out ICommand? command))
                 return;
 
-            if (!TryLinkCommand(command, out MethodInfo? method))
+            if (!TryLinkCommand(command, out ICommandInfo? commandInfo))
                 return;
-
-            object? result = await InvokeCommandAsync(command, method);
 
             try
             {
+                object? result = await InvokeCommandAsync(command, commandInfo);
+
                 if (await TryProcessResultAsync(command, result))
                     return;
 
@@ -87,25 +89,31 @@ namespace Termigram.Bot
             return false;
         }
 
-        protected virtual bool TryLinkCommand(ICommand command, [NotNullWhen(true)]out MethodInfo? method)
+        protected virtual bool TryLinkCommand(ICommand command, [NotNullWhen(true)]out ICommandInfo? commandInfo)
         {
-            method = default;
+            commandInfo = default;
             for (int i = 0; i < Options.Linkers.Count; ++i)
                 for (int j = 0; j < Commands.Length; ++j)
                     if (Options.Linkers[i].CanBeLinked(command, Commands[j]))
                     {
-                        method = Commands[j];
+                        commandInfo = Commands[j];
                         return true;
                     }
+
+            if (DefaultCommand is { })
+            {
+                commandInfo = DefaultCommand;
+                return true;
+            }
 
             return false;
         }
 
-        protected virtual async Task<object?> InvokeCommandAsync(ICommand command, MethodInfo method)
+        protected virtual async Task<object?> InvokeCommandAsync(ICommand command, ICommandInfo commandInfo)
         {
             try
             {
-                object? result = Options.CommandInvoker.Invoke(command, method, this);
+                object? result = Options.CommandInvoker.Invoke(command, commandInfo, this);
 
                 if (result is Task task)
                 {
