@@ -1,12 +1,12 @@
-﻿using System.Reflection;
+﻿using Termigram.CommandInfos;
 using Termigram.Commands;
 
 namespace Termigram.CommandLinkers
 {
     public interface ICommandLinker<in TCommand> : ICommandLinker where TCommand : ICommand
     {
-        bool CanBeLinked(TCommand command, MethodInfo method);
+        bool CanBeLinked(TCommand command, ICommandInfo commandInfo);
 
-        bool ICommandLinker.CanBeLinked(ICommand command, MethodInfo method) => command is TCommand typedCommand && CanBeLinked(typedCommand, method);
+        bool ICommandLinker.CanBeLinked(ICommand command, ICommandInfo commandInfo) => command is TCommand typedCommand && CanBeLinked(typedCommand, commandInfo);
     }
 }

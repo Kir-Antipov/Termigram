@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Termigram.CommandInfos;
 using Termigram.Commands;
 using Termigram.Converters;
 using Termigram.DefaultValueProviders;
@@ -31,9 +32,9 @@ namespace Termigram.CommandInvokers
         #endregion
 
         #region Functions
-        protected override object? InvokeImpl(ICommand command, MethodInfo method, object? target)
+        protected override object? InvokeImpl(ICommand command, ICommandInfo commandInfo, object? target)
         {
-            ParameterInfo[] infos = method.GetParameters();
+            ParameterInfo[] infos = commandInfo.Method.GetParameters();
             object?[] args = new object?[infos.Length];
             int i = 0;
 
@@ -50,7 +51,7 @@ namespace Termigram.CommandInvokers
             for (; i < args.Length; ++i)
                 args[i] = TryProvideSpecialValue(infos[i], command, out object? result) ? result : ProvideDefaultValue(infos[i]);
 
-            return method.Invoke(target, args);
+            return commandInfo.Method.Invoke(target, args);
         }
 
         protected virtual bool TryProvideSpecialValue(ParameterInfo parameter, ICommand command, out object? result)

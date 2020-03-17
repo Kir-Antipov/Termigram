@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Reflection;
+using Termigram.CommandInfos;
 
 namespace Termigram.CommandExtractors
 {
     public interface ICommandExtractor
     {
-        MethodInfo[] ExtractCommands(Type botType);
+        ICommandInfo[] ExtractCommands(Type botType, out ICommandInfo? defaultCommand);
     }
 }
