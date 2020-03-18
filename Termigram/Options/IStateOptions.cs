@@ -1,9 +1,10 @@
-﻿using Termigram.State;
+﻿using System;
+using Termigram.State;
 
 namespace Termigram.Options
 {
     public interface IStateOptions : IOptions
     {
-        IState State { get; }
+        Func<IState> StateFactory { get; }
     }
 }

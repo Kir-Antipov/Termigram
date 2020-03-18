@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using Termigram.State;
 
@@ -7,7 +8,7 @@ namespace Termigram.Options
     public class DefaultStateOptions : DefaultOptions, IStateOptions
     {
         #region Var
-        public IState State { get; }
+        public Func<IState> StateFactory { get; }
         #endregion
 
         #region Init
@@ -19,7 +20,7 @@ namespace Termigram.Options
 
         protected DefaultStateOptions(string token, HttpClient? httpClient, IWebProxy? proxy) : base(token, httpClient, proxy)
         {
-            State = new DefaultState();
+            StateFactory = () => new DefaultState();
         }
         #endregion
     }

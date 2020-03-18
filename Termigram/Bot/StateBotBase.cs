@@ -11,7 +11,7 @@ namespace Termigram.Bot
         public StateBotBase(IStateOptions options) : base(options)
         {
             Options = options;
-            State = options.State;
+            State = options.StateFactory();
         }
     }
 }
