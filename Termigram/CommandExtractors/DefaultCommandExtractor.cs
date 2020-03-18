@@ -16,7 +16,7 @@ namespace Termigram.CommandExtractors
                 .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
                 .Select(x => new { Method = x, Attribute = x.GetCustomAttribute<DefaultCommandAttribute>() })
                 .Where(x => x.Attribute is { })
-                .Select(x => new DefaultCommandInfo(x.Attribute.Name ?? x.Method.Name, x.Method))
+                .Select(x => new DefaultCommandInfo(x.Attribute.Name ?? x.Method.GetCustomAttribute<CommandAttribute>()?.Name ?? x.Method.Name, x.Method))
                 .FirstOrDefault();
 
             Bindings bindings = botType.GetCustomAttribute<BotAttribute>()?.Bindings ?? Bindings.Default;
