@@ -3,16 +3,10 @@
 namespace Termigram.Commands
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class DefaultCommandAttribute : Attribute
+    public class DefaultCommandAttribute : CommandAttribute
     {
-        #region Var
-        public string? Name { get; }
-        #endregion
+        public DefaultCommandAttribute() : base() { }
 
-        #region Init
-        public DefaultCommandAttribute() => Name = default;
-
-        public DefaultCommandAttribute(string name) => Name = name;
-        #endregion
+        public DefaultCommandAttribute(params string[] names) : base(names) { }
     }
 }

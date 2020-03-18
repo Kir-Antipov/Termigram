@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Termigram.Commands
 {
@@ -6,13 +7,13 @@ namespace Termigram.Commands
     public class CommandAttribute : Attribute
     {
         #region Var
-        public string? Name { get; }
+        public IReadOnlyList<string>? Names { get; }
         #endregion
 
         #region Init
-        public CommandAttribute() => Name = default;
+        public CommandAttribute() => Names = default;
 
-        public CommandAttribute(string name) => Name = name;
+        public CommandAttribute(params string[] names) => Names = names;
         #endregion
     }
 }
