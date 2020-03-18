@@ -26,6 +26,7 @@ namespace Termigram.CommandExtractors
             var methods = botType
                 .GetMethods(bindings.ExtractBindingFlags())
                 .Where(x => x.DeclaringType.Assembly != typeof(BotBase).Assembly && x.DeclaringType != typeof(object))
+                .Where(x => x.GetCustomAttribute<IgnoreCommandAttribute>() is null)
                 .Select(x => new { Method = x, Attribute = x.GetCustomAttribute<CommandAttribute>() });
 
             if (bindings.HasFlag(Bindings.MarkedAsCommand))
