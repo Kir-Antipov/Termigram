@@ -9,7 +9,7 @@ namespace Termigram.CommandParsers
 {
     public class TextCommandParser : CommandParserBase<TextCommand>
     {
-        private static readonly Regex NameRegex = new Regex(@"^[\s\/]*([a-zA-Z0-9]*)", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex NameRegex = new Regex(@"^[\s\/]*([^ ]*)", RegexOptions.Compiled | RegexOptions.Singleline);
 
         public override bool TryParse(Update update, [NotNullWhen(true)]out TextCommand? command)
         {
