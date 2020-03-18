@@ -1,4 +1,5 @@
-﻿using Telegram.Bot.Types.Enums;
+﻿using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace Termigram.Messages
 {
@@ -6,10 +7,15 @@ namespace Termigram.Messages
     {
 		#region Var
 		public ChatAction ChatAction { get; }
+		public ChatId? ChatId { get; }
 		#endregion
 
 		#region Init
-		public ChatActionMessage(ChatAction chatAction) => ChatAction = chatAction;
+		public ChatActionMessage(ChatAction chatAction, ChatId? chatId = null)
+		{
+			ChatAction = chatAction;
+			ChatId = chatId;
+		}
 		#endregion
 
 		#region Functions

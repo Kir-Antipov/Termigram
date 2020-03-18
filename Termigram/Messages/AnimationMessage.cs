@@ -19,13 +19,14 @@ namespace Termigram.Messages
 		public int ReplyToMessageId { get; }
 		public bool DisableNotification { get; }
 		public IReplyMarkup? ReplyMarkup { get; }
+		public ChatId? ChatId { get; }
 		#endregion
 
 		#region Init
-		public AnimationMessage(string animation, int duration = 0, int width = 0, int height = 0, InputMedia? thumb = null, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null)
-			: this(new InputOnlineFile(animation), duration, width, height, thumb, caption, parseMode, replyToMessageId, disableNotification, replyMarkup) { }
+		public AnimationMessage(string animation, int duration = 0, int width = 0, int height = 0, InputMedia? thumb = null, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null, ChatId? chatId = null)
+			: this(new InputOnlineFile(animation), duration, width, height, thumb, caption, parseMode, replyToMessageId, disableNotification, replyMarkup, chatId) { }
 
-		public AnimationMessage(InputOnlineFile animation, int duration = 0, int width = 0, int height = 0, InputMedia? thumb = null, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null)
+		public AnimationMessage(InputOnlineFile animation, int duration = 0, int width = 0, int height = 0, InputMedia? thumb = null, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null, ChatId? chatId = null)
 		{
 			Animation = animation;
 			Duration = duration;
@@ -37,6 +38,7 @@ namespace Termigram.Messages
 			ReplyToMessageId = replyToMessageId;
 			DisableNotification = disableNotification;
 			ReplyMarkup = replyMarkup;
+			ChatId = chatId;
 		}
 		#endregion
 

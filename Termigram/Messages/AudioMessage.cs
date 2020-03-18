@@ -19,13 +19,14 @@ namespace Termigram.Messages
 		public int ReplyToMessageId { get; }
 		public IReplyMarkup? ReplyMarkup { get; }
 		public InputMedia? Thumb { get; }
+		public ChatId? ChatId { get; }
 		#endregion
 
 		#region Init
-		public AudioMessage(string audio, string? caption = null, ParseMode? parseMode = null, int duration = 0, string? performer = null, string? title = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, InputMedia? thumb = null)
-			: this(new InputOnlineFile(audio), caption, parseMode, duration, performer, title, disableNotification, replyToMessageId,replyMarkup, thumb) { }
+		public AudioMessage(string audio, string? caption = null, ParseMode? parseMode = null, int duration = 0, string? performer = null, string? title = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, InputMedia? thumb = null, ChatId? chatId = null)
+			: this(new InputOnlineFile(audio), caption, parseMode, duration, performer, title, disableNotification, replyToMessageId,replyMarkup, thumb, chatId) { }
 
-		public AudioMessage(InputOnlineFile audio, string? caption = null, ParseMode? parseMode = null, int duration = 0, string? performer = null, string? title = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, InputMedia? thumb = null)
+		public AudioMessage(InputOnlineFile audio, string? caption = null, ParseMode? parseMode = null, int duration = 0, string? performer = null, string? title = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, InputMedia? thumb = null, ChatId? chatId = null)
 		{
 			Audio = audio;
 			Caption = caption;
@@ -37,6 +38,7 @@ namespace Termigram.Messages
 			ReplyToMessageId = replyToMessageId;
 			ReplyMarkup = replyMarkup;
 			Thumb = thumb;
+			ChatId = chatId;
 		}
 		#endregion
 	}

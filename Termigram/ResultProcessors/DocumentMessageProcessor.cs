@@ -9,6 +9,6 @@ namespace Termigram.ResultProcessors
     public class DocumentMessageProcessor : ResultProcessorBase<DocumentMessage>
     {
         protected override Task ProcessResultAsync(IBot bot, ICommand command, DocumentMessage result) =>
-            bot.Client.SendDocumentAsync(command.Update.GetChatIdOrUserId(), result.Document, result.Caption, result.ParseMode, result.DisableNotification, result.ReplyToMessageId, result.ReplyMarkup, default, result.Thumb);
+            bot.Client.SendDocumentAsync(result.ChatId ?? command.Update.GetChatIdOrUserId(), result.Document, result.Caption, result.ParseMode, result.DisableNotification, result.ReplyToMessageId, result.ReplyMarkup, default, result.Thumb);
     }
 }

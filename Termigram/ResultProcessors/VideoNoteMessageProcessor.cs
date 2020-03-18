@@ -9,6 +9,6 @@ namespace Termigram.ResultProcessors
     public class VideoNoteMessageProcessor : ResultProcessorBase<VideoNoteMessage>
     {
         protected override Task ProcessResultAsync(IBot bot, ICommand command, VideoNoteMessage result) =>
-            bot.Client.SendVideoNoteAsync(command.Update.GetChatIdOrUserId(), result.VideoNote, result.Duration, result.Length, result.DisableNotification, result.ReplyToMessageId, result.ReplyMarkup, default, result.Thumb);
+            bot.Client.SendVideoNoteAsync(result.ChatId ?? command.Update.GetChatIdOrUserId(), result.VideoNote, result.Duration, result.Length, result.DisableNotification, result.ReplyToMessageId, result.ReplyMarkup, default, result.Thumb);
     }
 }

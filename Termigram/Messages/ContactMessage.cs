@@ -1,4 +1,5 @@
-﻿using Telegram.Bot.Types.ReplyMarkups;
+﻿using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Termigram.Messages
 {
@@ -12,10 +13,11 @@ namespace Termigram.Messages
 		public int ReplyToMessageId { get; }
 		public IReplyMarkup? ReplyMarkup { get; }
 		public string? VCard { get; }
+		public ChatId? ChatId { get; }
 		#endregion
 
 		#region Init
-		public ContactMessage(string phoneNumber, string firstname, string? lastname = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, string? vCard = null)
+		public ContactMessage(string phoneNumber, string firstname, string? lastname = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, string? vCard = null, ChatId? chatId = null)
 		{
 			PhoneNumber = phoneNumber;
 			Firstname = firstname;
@@ -24,6 +26,7 @@ namespace Termigram.Messages
 			ReplyToMessageId = replyToMessageId;
 			ReplyMarkup = replyMarkup;
 			VCard = vCard;
+			ChatId = chatId;
 		}
 		#endregion
 	}

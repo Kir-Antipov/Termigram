@@ -1,4 +1,5 @@
-﻿using Telegram.Bot.Types.Enums;
+﻿using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
 using Termigram.Extensions;
@@ -14,13 +15,14 @@ namespace Termigram.Messages
 		public bool DisableNotification { get; }
 		public int ReplyToMessageId { get; }
 		public IReplyMarkup? ReplyMarkup { get; }
+		public ChatId? ChatId { get; }
 		#endregion
 
 		#region Init
-		public PhotoMessage(string photo, string? caption = null, ParseMode? parseMode = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null)
-			: this(new InputOnlineFile(photo), caption, parseMode, disableNotification, replyToMessageId, replyMarkup) { }
+		public PhotoMessage(string photo, string? caption = null, ParseMode? parseMode = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, ChatId? chatId = null)
+			: this(new InputOnlineFile(photo), caption, parseMode, disableNotification, replyToMessageId, replyMarkup, chatId) { }
 
-		public PhotoMessage(InputOnlineFile photo, string? caption = null, ParseMode? parseMode = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null)
+		public PhotoMessage(InputOnlineFile photo, string? caption = null, ParseMode? parseMode = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, ChatId? chatId = null)
 		{
 			Photo = photo;
 			Caption = caption;
@@ -28,6 +30,7 @@ namespace Termigram.Messages
 			DisableNotification = disableNotification;
 			ReplyToMessageId = replyToMessageId;
 			ReplyMarkup = replyMarkup;
+			ChatId = chatId;
 		}
 		#endregion
 	}

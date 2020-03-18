@@ -9,6 +9,6 @@ namespace Termigram.ResultProcessors
     public class PhotoMessageProcessor : ResultProcessorBase<PhotoMessage>
     {
         protected override Task ProcessResultAsync(IBot bot, ICommand command, PhotoMessage result) =>
-            bot.Client.SendPhotoAsync(command.Update.GetChatIdOrUserId(), result.Photo, result.Caption, result.ParseMode, result.DisableNotification, result.ReplyToMessageId);
+            bot.Client.SendPhotoAsync(result.ChatId ?? command.Update.GetChatIdOrUserId(), result.Photo, result.Caption, result.ParseMode, result.DisableNotification, result.ReplyToMessageId);
     }
 }

@@ -20,13 +20,14 @@ namespace Termigram.Messages
 		public int ReplyToMessageId { get; }
 		public bool DisableNotification { get; }
 		public IReplyMarkup? ReplyMarkup { get; }
+		public ChatId? ChatId { get; }
 		#endregion
 
 		#region Init
-		public VideoMessage(string video, int duration = 0, int width = 0, int height = 0, InputMedia? thumb = null, string? caption = null, ParseMode? parseMode = null, bool supportsStreaming = false, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null)
-			: this(new InputOnlineFile(video), duration, width, height, thumb, caption, parseMode, supportsStreaming, replyToMessageId, disableNotification, replyMarkup) { }
+		public VideoMessage(string video, int duration = 0, int width = 0, int height = 0, InputMedia? thumb = null, string? caption = null, ParseMode? parseMode = null, bool supportsStreaming = false, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null, ChatId? chatId = null)
+			: this(new InputOnlineFile(video), duration, width, height, thumb, caption, parseMode, supportsStreaming, replyToMessageId, disableNotification, replyMarkup, chatId) { }
 
-		public VideoMessage(InputOnlineFile video, int duration = 0, int width = 0, int height = 0, InputMedia? thumb = null, string? caption = null, ParseMode? parseMode = null, bool supportsStreaming = false, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null)
+		public VideoMessage(InputOnlineFile video, int duration = 0, int width = 0, int height = 0, InputMedia? thumb = null, string? caption = null, ParseMode? parseMode = null, bool supportsStreaming = false, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null, ChatId? chatId = null)
 		{
 			Video = video;
 			Duration = duration;
@@ -39,6 +40,7 @@ namespace Termigram.Messages
 			ReplyToMessageId = replyToMessageId;
 			DisableNotification = disableNotification;
 			ReplyMarkup = replyMarkup;
+			ChatId = chatId;
 		}
 		#endregion
 	}

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -17,10 +18,11 @@ namespace Termigram.Messages
 		public bool? AllowsMultipleAnswers { get; }
 		public int? CorrectOptionId { get; }
 		public bool? IsClosed { get; }
+		public ChatId? ChatId { get; }
 		#endregion
 
 		#region Init
-		public PollMessage(string question, IEnumerable<string> options, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, bool? isAnonymous = null, PollType? type = null, bool? allowsMultipleAnswers = null, int? correctOptionId = null, bool? isClosed = null)
+		public PollMessage(string question, IEnumerable<string> options, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, bool? isAnonymous = null, PollType? type = null, bool? allowsMultipleAnswers = null, int? correctOptionId = null, bool? isClosed = null, ChatId? chatId = null)
 		{
 			Question = question;
 			Options = options;
@@ -32,6 +34,7 @@ namespace Termigram.Messages
 			AllowsMultipleAnswers = allowsMultipleAnswers;
 			CorrectOptionId = correctOptionId;
 			IsClosed = isClosed;
+			ChatId = chatId;
 		}
 		#endregion
 	}

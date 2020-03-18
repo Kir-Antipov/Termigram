@@ -9,6 +9,6 @@ namespace Termigram.ResultProcessors
     public class GameMessageProcessor : ResultProcessorBase<GameMessage>
     {
         protected override Task ProcessResultAsync(IBot bot, ICommand command, GameMessage result) =>
-            bot.Client.SendGameAsync(command.Update.GetChatId().Identifier, result.GameShortName, result.DisableNotification, result.ReplyToMessageId, result.ReplyMarkup);
+            bot.Client.SendGameAsync(result.ChatId?.Identifier ?? command.Update.GetChatId().Identifier, result.GameShortName, result.DisableNotification, result.ReplyToMessageId, result.ReplyMarkup);
     }
 }

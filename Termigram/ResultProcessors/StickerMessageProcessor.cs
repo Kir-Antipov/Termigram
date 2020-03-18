@@ -9,6 +9,6 @@ namespace Termigram.ResultProcessors
     public class StickerMessageProcessor : ResultProcessorBase<StickerMessage>
     {
         protected override Task ProcessResultAsync(IBot bot, ICommand command, StickerMessage result) =>
-            bot.Client.SendStickerAsync(command.Update.GetChatIdOrUserId(), result.Sticker, result.DisableNotification, result.ReplyToMessageId, result.ReplyMarkup);
+            bot.Client.SendStickerAsync(result.ChatId ?? command.Update.GetChatIdOrUserId(), result.Sticker, result.DisableNotification, result.ReplyToMessageId, result.ReplyMarkup);
     }
 }

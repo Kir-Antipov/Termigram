@@ -1,4 +1,5 @@
-﻿using Telegram.Bot.Types.Enums;
+﻿using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using Termigram.Extensions;
 
@@ -13,10 +14,11 @@ namespace Termigram.Messages
         public bool DisableNotification { get; }
         public int ReplyToMessageId { get; }
         public IReplyMarkup? ReplyMarkup { get; }
+        public ChatId? ChatId { get; }
         #endregion
 
         #region Init
-        public TextMessage(string text, ParseMode? parseMode = null, bool disableWebPagePreview = false, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null)
+        public TextMessage(string text, ParseMode? parseMode = null, bool disableWebPagePreview = false, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, ChatId? chatId = null)
         {
             Text = text;
             ParseMode = parseMode ?? ParseModeExtensions.RecognizeSuitableParseMode(text);
@@ -24,6 +26,7 @@ namespace Termigram.Messages
             DisableNotification = disableNotification;
             ReplyToMessageId = replyToMessageId;
             ReplyMarkup = replyMarkup;
+            ChatId = chatId;
         }
         #endregion
 

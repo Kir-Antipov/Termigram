@@ -9,6 +9,6 @@ namespace Termigram.ResultProcessors
     public class VenueMessageProcessor : ResultProcessorBase<VenueMessage>
     {
         protected override Task ProcessResultAsync(IBot bot, ICommand command, VenueMessage result) =>
-            bot.Client.SendVenueAsync(command.Update.GetChatIdOrUserId(), result.Latitude, result.Longitude, result.Title, result.Address, result.FoursquareId, result.DisableNotification, result.ReplyToMessageId, result.ReplyMarkup, default, result.FoursquareType);
+            bot.Client.SendVenueAsync(result.ChatId ?? command.Update.GetChatIdOrUserId(), result.Latitude, result.Longitude, result.Title, result.Address, result.FoursquareId, result.DisableNotification, result.ReplyToMessageId, result.ReplyMarkup, default, result.FoursquareType);
     }
 }

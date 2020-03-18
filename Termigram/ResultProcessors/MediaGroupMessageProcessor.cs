@@ -9,6 +9,6 @@ namespace Termigram.ResultProcessors
     public class MediaGroupMessageProcessor : ResultProcessorBase<MediaGroupMessage>
     {
         protected override Task ProcessResultAsync(IBot bot, ICommand command, MediaGroupMessage result) =>
-            bot.Client.SendMediaGroupAsync(result.MediaGroup, command.Update.GetChatIdOrUserId(), result.DisableNotification, result.ReplyToMessageId);
+            bot.Client.SendMediaGroupAsync(result.MediaGroup, result.ChatId ?? command.Update.GetChatIdOrUserId(), result.DisableNotification, result.ReplyToMessageId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Telegram.Bot.Types.ReplyMarkups;
+﻿using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Termigram.Messages
 {
@@ -11,10 +12,11 @@ namespace Termigram.Messages
 		public bool DisableNotification { get; }
 		public int ReplyToMessageId { get; }
 		public IReplyMarkup? ReplyMarkup { get; }
+		public ChatId? ChatId { get; }
 		#endregion
 
 		#region Init
-		public LocationMessage(float latitude, float longitude, int livePeriod = 0, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null)
+		public LocationMessage(float latitude, float longitude, int livePeriod = 0, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, ChatId? chatId = null)
 		{
 			Latitude = latitude;
 			Longitude = longitude;
@@ -22,6 +24,7 @@ namespace Termigram.Messages
 			DisableNotification = disableNotification;
 			ReplyToMessageId = replyToMessageId;
 			ReplyMarkup = replyMarkup;
+			ChatId = chatId;
 		}
 		#endregion
 	}

@@ -16,13 +16,14 @@ namespace Termigram.Messages
 		public bool DisableNotification { get; }
 		public IReplyMarkup? ReplyMarkup { get; }
 		public InputMedia? Thumb { get; }
+		public ChatId? ChatId { get; }
 		#endregion
 
 		#region Init
-		public DocumentMessage(string document, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null, InputMedia? thumb = null)
-			: this(new InputOnlineFile(document), caption, parseMode, replyToMessageId, disableNotification, replyMarkup, thumb) { }
+		public DocumentMessage(string document, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null, InputMedia? thumb = null, ChatId? chatId = null)
+			: this(new InputOnlineFile(document), caption, parseMode, replyToMessageId, disableNotification, replyMarkup, thumb, chatId) { }
 
-		public DocumentMessage(InputOnlineFile document, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null, InputMedia? thumb = null)
+		public DocumentMessage(InputOnlineFile document, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null, InputMedia? thumb = null, ChatId? chatId = null)
 		{
 			Document = document;
 			Caption = caption;
@@ -31,6 +32,7 @@ namespace Termigram.Messages
 			DisableNotification = disableNotification;
 			ReplyMarkup = replyMarkup;
 			Thumb = thumb;
+			ChatId = chatId;
 		}
 		#endregion
 
