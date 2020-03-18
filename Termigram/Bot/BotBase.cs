@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -11,6 +12,7 @@ using Telegram.Bot.Args;
 using Telegram.Bot.Types;
 using Termigram.CommandInfos;
 using Termigram.Commands;
+using Termigram.Extensions;
 using Termigram.Options;
 
 namespace Termigram.Bot
@@ -23,6 +25,9 @@ namespace Termigram.Bot
 
         protected readonly ICommandInfo[] Commands;
         protected readonly ICommandInfo? DefaultCommand;
+
+        private readonly ConcurrentDictionary<int, TaskCompletionSource<Update?>> AwaitingUpdateFromUser;
+        private readonly ConcurrentDictionary<(long, int), TaskCompletionSource<Update?>> AwaitingUpdateFromChatUser;
         #endregion
 
         #region Init
@@ -31,6 +36,9 @@ namespace Termigram.Bot
             Options = options;
             Client = options.Proxy is { } ? new TelegramBotClient(options.Token, options.Proxy) : new TelegramBotClient(options.Token, options.HttpClient);
             Commands = options.CommandExtractor.ExtractCommands(GetType(), out DefaultCommand);
+
+            AwaitingUpdateFromUser = new ConcurrentDictionary<int, TaskCompletionSource<Update?>>();
+            AwaitingUpdateFromChatUser = new ConcurrentDictionary<(long, int), TaskCompletionSource<Update?>>();
         }
         #endregion
 
@@ -49,6 +57,9 @@ namespace Termigram.Bot
 
         protected virtual async Task OnUpdateAsync(ITelegramBotClient sender, UpdateEventArgs e)
         {
+            if (TrySetResult(e.Update))
+                return;
+
             if (!TryParseCommand(e.Update, out ICommand? command))
                 return;
 
@@ -135,6 +146,71 @@ namespace Termigram.Bot
             for (int i = 0; i < Options.ResultProcessors.Count; ++i)
                 if (await Options.ResultProcessors[i].TryProcessResultAsync(this, command, result))
                     return true;
+
+            return false;
+        }
+
+        protected virtual Task<Update?> WaitForUpdateAsync(User user, CancellationToken cancellationToken = default) =>
+            WaitForResultAsync(AwaitingUpdateFromUser, user.Id, cancellationToken);
+
+        protected virtual Task<Update?> WaitForUpdateAsync(ChatId chat, User user, CancellationToken cancellationToken = default) =>
+            WaitForResultAsync(AwaitingUpdateFromChatUser, (chat.Identifier, user.Id), cancellationToken);
+
+        protected virtual async Task<string?> WaitForAnswerAsync(User user, CancellationToken cancellationToken = default)
+        {
+            Update? update = await WaitForUpdateAsync(user, cancellationToken);
+            if (update is null)
+                return null;
+
+            update.TryGetText(out string? result);
+            return result;
+        }
+
+        protected virtual async Task<string?> WaitForAnswerAsync(ChatId chat, User user, CancellationToken cancellationToken = default)
+        {
+            Update? update = await WaitForUpdateAsync(chat, user, cancellationToken);
+            if (update is null)
+                return null;
+
+            update.TryGetText(out string? result);
+            return result;
+        }
+
+        private static Task<TResult> WaitForResultAsync<TKey, TResult>(ConcurrentDictionary<TKey, TaskCompletionSource<TResult>> dictionary, TKey key, CancellationToken cancellationToken)
+        {
+            const int maxDelay_ms = 10 * 60 * 1000; // 10 minutes in ms
+
+            TaskCompletionSource<TResult> updateSource = new TaskCompletionSource<TResult>();
+
+            if (!cancellationToken.CanBeCanceled)
+                cancellationToken = new CancellationTokenSource(maxDelay_ms).Token;
+
+            cancellationToken.Register(() =>
+            {
+                dictionary.TryRemove(key, out _);
+                updateSource.TrySetResult(default!);
+            });
+
+            dictionary.AddOrUpdate(key, updateSource, (a, b) => updateSource);
+            return updateSource.Task;
+        }
+
+        private bool TrySetResult(Update update)
+        {
+            if (update.TryGetUser(out User? user))
+            {
+                if (update.TryGetChatId(out ChatId? chatId) && AwaitingUpdateFromChatUser.TryRemove((chatId.Identifier, user.Id), out TaskCompletionSource<Update?> updateChatSource))
+                {
+                    updateChatSource.TrySetResult(update);
+                    return true;
+                }
+
+                if (AwaitingUpdateFromUser.TryRemove(user.Id, out TaskCompletionSource<Update?> updateSource))
+                {
+                    updateSource.TrySetResult(update);
+                    return true;
+                }
+            }
 
             return false;
         }
