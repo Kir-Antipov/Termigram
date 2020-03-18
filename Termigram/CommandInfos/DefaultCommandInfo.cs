@@ -1,19 +1,20 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 
 namespace Termigram.CommandInfos
 {
     public class DefaultCommandInfo : CommandInfoBase
     {
         #region Var
-        public override string Name { get; }
+        public override IReadOnlyList<string> Names { get; }
 
         public override MethodInfo Method { get; }
         #endregion
 
         #region Init
-        public DefaultCommandInfo(string name, MethodInfo method)
+        public DefaultCommandInfo(IReadOnlyList<string> names, MethodInfo method)
         {
-            Name = name;
+            Names = names;
             Method = method;
         }
         #endregion
