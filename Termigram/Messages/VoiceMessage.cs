@@ -18,6 +18,9 @@ namespace Termigram.Messages
 		#endregion
 
 		#region Init
+		public VoiceMessage(string voice, int duration = 0, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null)
+			: this(new InputOnlineFile(voice), duration, caption, parseMode, replyToMessageId, disableNotification, replyMarkup) { }
+
 		public VoiceMessage(InputOnlineFile voice, int duration = 0, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null)
 		{
 			Voice = voice;

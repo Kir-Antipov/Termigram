@@ -17,6 +17,9 @@ namespace Termigram.Messages
 		#endregion
 
 		#region Init
+		public PhotoMessage(string photo, string? caption = null, ParseMode? parseMode = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null)
+			: this(new InputOnlineFile(photo), caption, parseMode, disableNotification, replyToMessageId, replyMarkup) { }
+
 		public PhotoMessage(InputOnlineFile photo, string? caption = null, ParseMode? parseMode = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null)
 		{
 			Photo = photo;

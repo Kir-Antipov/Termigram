@@ -23,6 +23,9 @@ namespace Termigram.Messages
 		#endregion
 
 		#region Init
+		public VideoMessage(string video, int duration = 0, int width = 0, int height = 0, InputMedia? thumb = null, string? caption = null, ParseMode? parseMode = null, bool supportsStreaming = false, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null)
+			: this(new InputOnlineFile(video), duration, width, height, thumb, caption, parseMode, supportsStreaming, replyToMessageId, disableNotification, replyMarkup) { }
+
 		public VideoMessage(InputOnlineFile video, int duration = 0, int width = 0, int height = 0, InputMedia? thumb = null, string? caption = null, ParseMode? parseMode = null, bool supportsStreaming = false, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null)
 		{
 			Video = video;

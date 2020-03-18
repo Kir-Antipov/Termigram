@@ -22,6 +22,9 @@ namespace Termigram.Messages
 		#endregion
 
 		#region Init
+		public AudioMessage(string audio, string? caption = null, ParseMode? parseMode = null, int duration = 0, string? performer = null, string? title = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, InputMedia? thumb = null)
+			: this(new InputOnlineFile(audio), caption, parseMode, duration, performer, title, disableNotification, replyToMessageId,replyMarkup, thumb) { }
+
 		public AudioMessage(InputOnlineFile audio, string? caption = null, ParseMode? parseMode = null, int duration = 0, string? performer = null, string? title = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, InputMedia? thumb = null)
 		{
 			Audio = audio;

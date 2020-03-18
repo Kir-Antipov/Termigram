@@ -17,6 +17,9 @@ namespace Termigram.Messages
 		#endregion
 
 		#region Init
+		public VideoNoteMessage(string videoNote, int duration = 0, int length = 0, InputMedia? thumb = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null)
+			: this(new InputTelegramFile(videoNote), duration, length, thumb, replyToMessageId, disableNotification, replyMarkup) { }
+
 		public VideoNoteMessage(InputTelegramFile videoNote, int duration = 0, int length = 0, InputMedia? thumb = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null)
 		{
 			VideoNote = videoNote;

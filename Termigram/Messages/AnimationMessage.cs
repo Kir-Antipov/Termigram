@@ -22,7 +22,10 @@ namespace Termigram.Messages
 		#endregion
 
 		#region Init
-		public AnimationMessage(InputOnlineFile animation, int duration = 0, int width = 0, int height = 0, InputMedia? thumb = null, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup replyMarkup = null)
+		public AnimationMessage(string animation, int duration = 0, int width = 0, int height = 0, InputMedia? thumb = null, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null)
+			: this(new InputOnlineFile(animation), duration, width, height, thumb, caption, parseMode, replyToMessageId, disableNotification, replyMarkup) { }
+
+		public AnimationMessage(InputOnlineFile animation, int duration = 0, int width = 0, int height = 0, InputMedia? thumb = null, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null)
 		{
 			Animation = animation;
 			Duration = duration;

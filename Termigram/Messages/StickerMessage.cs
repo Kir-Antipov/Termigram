@@ -13,6 +13,9 @@ namespace Termigram.Messages
 		#endregion
 
 		#region Init
+		public StickerMessage(string sticker, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null)
+			: this(new InputOnlineFile(sticker), disableNotification, replyToMessageId, replyMarkup) { }
+
 		public StickerMessage(InputOnlineFile sticker, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null)
 		{
 			Sticker = sticker;

@@ -19,6 +19,9 @@ namespace Termigram.Messages
 		#endregion
 
 		#region Init
+		public DocumentMessage(string document, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null, InputMedia? thumb = null)
+			: this(new InputOnlineFile(document), caption, parseMode, replyToMessageId, disableNotification, replyMarkup, thumb) { }
+
 		public DocumentMessage(InputOnlineFile document, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null, InputMedia? thumb = null)
 		{
 			Document = document;
