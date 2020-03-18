@@ -17,6 +17,8 @@ namespace Termigram.Commands
         Any = Public | NonPublic | Instance | Static,
         AnyStatic = Public | NonPublic | Static,
         AnyInstance = Public | NonPublic | Instance,
+        AnyPublic = Static | Instance | Public,
+        AnyNonPublic = Static | Instance | NonPublic,
         Default = Public | NonPublic | Instance | Static | MarkedAsCommand
     }
 }
