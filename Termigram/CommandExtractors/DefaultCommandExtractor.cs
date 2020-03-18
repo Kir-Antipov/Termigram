@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Termigram.Bot;
@@ -16,7 +17,7 @@ namespace Termigram.CommandExtractors
                 .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
                 .Select(x => new { Method = x, Attribute = x.GetCustomAttribute<DefaultCommandAttribute>() })
                 .Where(x => x.Attribute is { })
-                .Select(x => new DefaultCommandInfo(x.Attribute.Name ?? x.Method.GetCustomAttribute<CommandAttribute>()?.Name ?? x.Method.Name, x.Method))
+                .Select(x => new DefaultCommandInfo(ExtractNames(x.Method, x.Method.GetCustomAttribute<DefaultCommandAttribute>(), x.Attribute), x.Method))
                 .FirstOrDefault();
 
             Bindings bindings = botType.GetCustomAttribute<BotAttribute>()?.Bindings ?? Bindings.Default;
@@ -33,10 +34,21 @@ namespace Termigram.CommandExtractors
                 methods = methods.Where(x => x.Attribute is { });
           
             return methods
-                .Select(x => new DefaultCommandInfo(x.Attribute?.Name ?? x.Method.Name, x.Method))
+                .Select(x => new DefaultCommandInfo(ExtractNames(x.Method, x.Method.GetCustomAttribute<DefaultCommandAttribute>(), x.Attribute), x.Method))
+                .Cast<ICommandInfo>()
                 .GroupBy(x => x.Name)
                 .Select(x => x.First())
                 .ToArray();
+        }
+
+        private static IReadOnlyList<string> ExtractNames(MethodInfo method, DefaultCommandAttribute? defaultAttribute, CommandAttribute? commandAttribute)
+        {
+            IReadOnlyList<string>? names = defaultAttribute?.Names;
+            if (names is null || names.Count == 0)
+                names = commandAttribute?.Names;
+            if (names is null || names.Count == 0)
+                names = new[] { method.Name };
+            return names;
         }
     }
 }
