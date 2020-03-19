@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 using Termigram.CommandInfos;
 using Termigram.Commands;
 using Termigram.Extensions;
@@ -140,6 +141,24 @@ namespace Termigram.Bot
                 return ex;
             }
         }
+
+        protected virtual ReplyKeyboardMarkup GenerateReplyKeyboardMarkup(params string[] methodNames) =>
+            GenerateReplyKeyboardMarkup(itemsInRow: 2, methodNames: methodNames);
+        
+        protected virtual ReplyKeyboardMarkup GenerateReplyKeyboardMarkup(int itemsInRow = 2, bool resizeKeyboard = true, bool oneTimeKeyboard = false, params string[] methodNames) =>
+            GenerateReplyKeyboardMarkup(methodNames.Batch(itemsInRow), resizeKeyboard, oneTimeKeyboard);
+
+        protected virtual ReplyKeyboardMarkup GenerateReplyKeyboardMarkup(IEnumerable<IEnumerable<string>> commandNames, bool resizeKeyboard = true, bool oneTimeKeyboard = false) =>
+            new ReplyKeyboardMarkup(commandNames.Select(row => row.Select(commandName => new KeyboardButton(Commands.First(x => x.Method.Name == commandName).Name))), resizeKeyboard, oneTimeKeyboard);
+        
+        protected virtual InlineKeyboardMarkup GenerateInlineKeyboardMarkup(params string[] methodNames) =>
+            GenerateInlineKeyboardMarkup(itemsInRow: 2, methodNames: methodNames);
+        
+        protected virtual InlineKeyboardMarkup GenerateInlineKeyboardMarkup(int itemsInRow = 2, params string[] methodNames) =>
+            GenerateInlineKeyboardMarkup(methodNames.Batch(itemsInRow));
+
+        protected virtual InlineKeyboardMarkup GenerateInlineKeyboardMarkup(IEnumerable<IEnumerable<string>> commandNames) =>
+            new InlineKeyboardMarkup(commandNames.Select(row => row.Select(commandName => Commands.First(x => x.Method.Name == commandName).Name).Select(commandName => new InlineKeyboardButton { Text = commandName, CallbackData = commandName })));
 
         protected virtual async Task<bool> TryProcessResultAsync(ICommand command, object? result)
         {
