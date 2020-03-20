@@ -3,10 +3,31 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Kir_Antipov</Authors>
+    <Copyright>(c) 2020 Kir_Antipov</Copyright>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/Kir-Antipov/Termigram</PackageProjectUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <RepositoryUrl>https://github.com/Kir-Antipov/Termigram</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>telegram bot chatbot chat-framework chat framework netcore Telegram.Bot Telegram.Bot.Framework</PackageTags>
+    <Description>The simplest way to build Telegram Bot in the whole multiverse 🤖</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Telegram.Bot" Version="15.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\media\icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
