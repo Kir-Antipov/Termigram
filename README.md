@@ -38,7 +38,7 @@ Are you interested? Then, let's go!
 
  - **.NET Standart 2.1+** (.NET Core 3.0+), cause I don't see this project without using such cool things as [`IAsyncEnumerable<T>`](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.iasyncenumerable-1?view=netcore-3.1) (I'll show some use cases later)
 
- - This library already uses the **Nullable feature**, so it will be easier for you to understand where null is a valid value and where it's not
+ - This library uses the **Nullable feature**, so it will be easier for you to understand where null is a valid value and where it's not
 
  - Alas, I had no enough time to write documentation for this project yet 😕 I'll fix this in the nearest future, but for now I hope that an example will be enough to bring you up to date
 
@@ -93,7 +93,7 @@ public class TestBot : StateBotBase
 }
 ```
 
-This mean that our bot has one command, which can be triggered somehow like this:
+It means that our bot has one command, which can be triggered somehow like this:
 
 > /start<br>
 > /begin<br>
@@ -136,7 +136,7 @@ public void NotCommand() => ...
 
 ### 5. DefaultCommandAttribute
 
-If you want your bot to respond by a prepared message in cases where the user hasn't called any of available commands, just mark one of the methods by [`DefaultCommandAttribute`](https://github.com/Kir-Antipov/Termigram/tree/master/Termigram/Commands/DefaultCommandAttribute.cs):
+If you want your bot to respond with a prepared message in cases where the user hasn't called any of available commands, just mark one of the methods by [`DefaultCommandAttribute`](https://github.com/Kir-Antipov/Termigram/tree/master/Termigram/Commands/DefaultCommandAttribute.cs):
 
 ```csharp
 [DefaultCommand]
@@ -202,7 +202,7 @@ public async Task<TextMessage> SendAsync()
 public string Sum(int a, int b, int c = 1) => $"Sum of *{a}*, *{b}* and *{c}* is {a + b + c}";
 ```
 
-As you can see, there's an ability to pass parameters to the method by invoking a command. 
+As you can see, there's a possibility to pass parameters to the method by invoking a command. 
 
 > /sum<br>
 > Sum of **0**, **0** and **1** is 1<br><br>
@@ -221,7 +221,7 @@ There're some special values which can be provided by [`ISpecialValueProvider`](
 
 ### 8. Exceptions
 
-Each exception is perceived as a user error, not an error of your code, since from a semantic point of view it was the user who could call the command in a wrong way. So these commands
+Each exception is perceived as a user error, not an error of your code, since, from a semantic point of view, it was the user who could call the command in a wrong way. So these commands
 
 ```csharp
 [Command]
