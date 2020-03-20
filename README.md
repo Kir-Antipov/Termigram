@@ -1,7 +1,7 @@
 # Termigram
 
  [![NuGet](https://img.shields.io/nuget/v/Termigram.svg?style=flat-square&label=Termigram&cacheSeconds=3600)](https://www.nuget.org/packages/Telegram.Bot.Framework)
- [![License](https://img.shields.io/github/license/Kir-Antipov/Termigram.svg?style=flat-square&label=License&cacheSeconds=2592000)](https://raw.githubusercontent.com/pouladpld/Telegram.Bot.Framework/master/LICENSE)
+ [![License](https://img.shields.io/github/license/Kir-Antipov/Termigram.svg?style=flat-square&label=License&cacheSeconds=1296000)](https://raw.githubusercontent.com/pouladpld/Telegram.Bot.Framework/master/LICENSE)
 
 <img src="./media/icon.png" alt="Termigram Logo" width=200 height=200 />
 
