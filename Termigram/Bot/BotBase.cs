@@ -54,14 +54,14 @@ namespace Termigram.Bot
             Client.OnUpdate -= OnUpdate;
         }
 
-        private async void OnUpdate(object sender, UpdateEventArgs e) => await OnUpdateAsync((ITelegramBotClient)sender, e);
+        private async void OnUpdate(object sender, UpdateEventArgs e) => await OnUpdateAsync((ITelegramBotClient)sender, e.Update);
 
-        protected virtual async Task OnUpdateAsync(ITelegramBotClient sender, UpdateEventArgs e)
+        protected virtual async Task OnUpdateAsync(ITelegramBotClient sender, Update update)
         {
-            if (TrySetResult(e.Update))
+            if (TrySetResult(update))
                 return;
 
-            if (!TryParseCommand(e.Update, out ICommand? command))
+            if (!TryParseCommand(update, out ICommand? command))
                 return;
 
             if (!TryLinkCommand(command, out ICommandInfo? commandInfo))
