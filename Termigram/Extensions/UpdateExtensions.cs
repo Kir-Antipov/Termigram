@@ -5,7 +5,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace Termigram.Extensions
 {
-    internal static class UpdateExtensions
+    public static class UpdateExtensions
     {
         public static bool TryGetText(this Update update, [NotNullWhen(true)]out string? text)
         {
