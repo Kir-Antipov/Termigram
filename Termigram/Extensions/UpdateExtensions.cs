@@ -36,7 +36,7 @@ namespace Termigram.Extensions
                 { EditedChannelPost: { Chat: { Id: { } id } } } => id,
                 { EditedMessage: { Chat: { Id: { } id } } } => id,
                 { Message: { Chat: { Id: { } id } } } => id,
-                _ => default
+                _ => default(long?)
             };
 
             return chatId is { };
