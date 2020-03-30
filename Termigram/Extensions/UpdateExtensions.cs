@@ -103,12 +103,12 @@ namespace Termigram.Extensions
 
         public static bool TryGetMessage(this Update update, [NotNullWhen(true)]out Message? message)
         {
-            message = update.Type switch
+            message = update switch
             {
-                UpdateType.ChannelPost => update.ChannelPost,
-                UpdateType.EditedChannelPost => update.EditedChannelPost,
-                UpdateType.EditedMessage => update.EditedMessage,
-                UpdateType.Message => update.Message,
+                { ChannelPost: { } msg } => msg,
+                { EditedChannelPost: { } msg } => msg,
+                { Message: { } msg } => msg,
+                { EditedMessage: { } msg } => msg,
                 _ => default
             };
 
