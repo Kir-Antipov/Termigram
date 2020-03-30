@@ -13,7 +13,7 @@ namespace Termigram.Extensions
             .Select(x =>
             {
                 ConstructorInfo constructor = x.GetConstructor(Type.EmptyTypes);
-                return constructor is null ? default : (T)constructor.Invoke(Array.Empty<object>());
+                return constructor is null ? default! : (T)constructor.Invoke(Array.Empty<object>());
             })
             .Where(x => x is { })
             .ToArray();
