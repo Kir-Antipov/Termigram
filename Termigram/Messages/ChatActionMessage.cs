@@ -3,11 +3,13 @@ using Telegram.Bot.Types.Enums;
 
 namespace Termigram.Messages
 {
-	public class ChatActionMessage
+	public class ChatActionMessage : IMessage<ChatAction>
     {
 		#region Var
 		public ChatAction ChatAction { get; }
 		public ChatId? ChatId { get; }
+
+		ChatAction IMessage<ChatAction>.Content => ChatAction;
 		#endregion
 
 		#region Init

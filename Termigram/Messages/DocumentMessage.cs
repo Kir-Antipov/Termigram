@@ -6,8 +6,8 @@ using Termigram.Extensions;
 
 namespace Termigram.Messages
 {
-	public class DocumentMessage
-    {
+	public class DocumentMessage : IMediaMessage, IMediaThumbMessage
+	{
 		#region Var
 		public InputOnlineFile Document { get; }
 		public string? Caption { get; }
@@ -17,13 +17,15 @@ namespace Termigram.Messages
 		public IReplyMarkup? ReplyMarkup { get; }
 		public InputMedia? Thumb { get; }
 		public ChatId? ChatId { get; }
+
+		InputOnlineFile IMessage<InputOnlineFile>.Content => Document;
 		#endregion
 
 		#region Init
-		public DocumentMessage(string document, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null, InputMedia? thumb = null, ChatId? chatId = null)
-			: this(new InputOnlineFile(document), caption, parseMode, replyToMessageId, disableNotification, replyMarkup, thumb, chatId) { }
+		public DocumentMessage(string document, string? caption = null, ParseMode? parseMode = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, InputMedia? thumb = null, ChatId? chatId = null)
+			: this(new InputOnlineFile(document), caption, parseMode, disableNotification, replyToMessageId, replyMarkup, thumb, chatId) { }
 
-		public DocumentMessage(InputOnlineFile document, string? caption = null, ParseMode? parseMode = null, int replyToMessageId = 0, bool disableNotification = false, IReplyMarkup? replyMarkup = null, InputMedia? thumb = null, ChatId? chatId = null)
+		public DocumentMessage(InputOnlineFile document, string? caption = null, ParseMode? parseMode = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, InputMedia? thumb = null, ChatId? chatId = null)
 		{
 			Document = document;
 			Caption = caption;
@@ -35,6 +37,5 @@ namespace Termigram.Messages
 			ChatId = chatId;
 		}
 		#endregion
-
 	}
 }

@@ -3,7 +3,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Termigram.Messages
 {
-	public class LocationMessage
+	public class LocationMessage : IMessage, ISilentMessage, IReplyMessage, IMarkupMessage
     {
 		#region Var
 		public float Latitude { get; }

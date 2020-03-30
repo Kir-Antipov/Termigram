@@ -6,7 +6,7 @@ using Termigram.Extensions;
 
 namespace Termigram.Messages
 {
-	public class AudioMessage
+	public class AudioMessage : IMediaMessage, IMediaThumbMessage, IPlayableMediaMessage
     {
 		#region Var
 		public InputOnlineFile Audio { get; }
@@ -20,6 +20,8 @@ namespace Termigram.Messages
 		public IReplyMarkup? ReplyMarkup { get; }
 		public InputMedia? Thumb { get; }
 		public ChatId? ChatId { get; }
+
+		InputOnlineFile IMessage<InputOnlineFile>.Content => Audio;
 		#endregion
 
 		#region Init

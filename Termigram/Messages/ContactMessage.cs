@@ -3,7 +3,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Termigram.Messages
 {
-	public class ContactMessage
+	public class ContactMessage : IMessage, ISilentMessage, IReplyMessage, IMarkupMessage
     {
 		#region Var
 		public string PhoneNumber { get; }

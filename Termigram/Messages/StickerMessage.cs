@@ -4,7 +4,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Termigram.Messages
 {
-	public class StickerMessage
+	public class StickerMessage : IMessage<InputOnlineFile>, ISilentMessage, IReplyMessage, IMarkupMessage
     {
 		#region Var
 		public InputOnlineFile Sticker { get; }
@@ -12,6 +12,8 @@ namespace Termigram.Messages
 		public int ReplyToMessageId { get; }
 		public IReplyMarkup? ReplyMarkup { get; }
 		public ChatId? ChatId { get; }
+
+		InputOnlineFile IMessage<InputOnlineFile>.Content => Sticker;
 		#endregion
 
 		#region Init

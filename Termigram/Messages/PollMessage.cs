@@ -5,7 +5,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Termigram.Messages
 {
-	public class PollMessage
+	public class PollMessage : IMessage<string>, ISilentMessage, IReplyMessage, IMarkupMessage
     {
 		#region Var
 		public string Question { get; }
@@ -19,10 +19,14 @@ namespace Termigram.Messages
 		public int? CorrectOptionId { get; }
 		public bool? IsClosed { get; }
 		public ChatId? ChatId { get; }
+
+		string IMessage<string>.Content => Question;
 		#endregion
 
 		#region Init
-		public PollMessage(string question, IEnumerable<string> options, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, bool? isAnonymous = null, PollType? type = null, bool? allowsMultipleAnswers = null, int? correctOptionId = null, bool? isClosed = null, ChatId? chatId = null)
+		public PollMessage(string question, params string[] options) : this(question, options, false) { }
+
+		public PollMessage(string question, IEnumerable<string> options, bool? isAnonymous = null, PollType? type = null, bool? allowsMultipleAnswers = null, int? correctOptionId = null, bool? isClosed = null, bool disableNotification = false, int replyToMessageId = 0, IReplyMarkup? replyMarkup = null, ChatId? chatId = null)
 		{
 			Question = question;
 			Options = options;

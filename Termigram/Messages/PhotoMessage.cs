@@ -6,7 +6,7 @@ using Termigram.Extensions;
 
 namespace Termigram.Messages
 {
-	public class PhotoMessage
+	public class PhotoMessage : IMediaMessage
     {
 		#region Var
 		public InputOnlineFile Photo { get; }
@@ -16,6 +16,8 @@ namespace Termigram.Messages
 		public int ReplyToMessageId { get; }
 		public IReplyMarkup? ReplyMarkup { get; }
 		public ChatId? ChatId { get; }
+
+		InputOnlineFile IMessage<InputOnlineFile>.Content => Photo;
 		#endregion
 
 		#region Init

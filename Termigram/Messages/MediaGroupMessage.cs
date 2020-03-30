@@ -3,7 +3,7 @@ using Telegram.Bot.Types;
 
 namespace Termigram.Messages
 {
-	public class MediaGroupMessage
+	public class MediaGroupMessage : IMessage, ISilentMessage, IReplyMessage
     {
 		#region Var
 		public IEnumerable<IAlbumInputMedia> MediaGroup { get; }

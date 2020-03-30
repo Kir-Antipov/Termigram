@@ -5,7 +5,7 @@ using Termigram.Extensions;
 
 namespace Termigram.Messages
 {
-    public class TextMessage
+    public class TextMessage : IMessage<string>, ISilentMessage, IReplyMessage, IMarkupMessage
     {
         #region Var
         public string Text { get; }
@@ -15,6 +15,8 @@ namespace Termigram.Messages
         public int ReplyToMessageId { get; }
         public IReplyMarkup? ReplyMarkup { get; }
         public ChatId? ChatId { get; }
+
+        string IMessage<string>.Content => Text;
         #endregion
 
         #region Init
