@@ -29,5 +29,13 @@ namespace Termigram.Extensions
                 yield return bucket;
             }
         }
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public static async IAsyncEnumerable<T> AsAsyncEnumerable<T>(this IEnumerable<T> source)
+        {
+            foreach (T value in source)
+                yield return value;
+        }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     }
 }
