@@ -13,7 +13,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>telegram bot chatbot chat-framework chat framework netcore Telegram.Bot Telegram.Bot.Framework</PackageTags>
     <Description>The simplest way to build Telegram Bot in the whole multiverse 🤖</Description>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
