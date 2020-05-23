@@ -79,27 +79,18 @@ namespace Termigram.Bot
 
                 if (result is IAsyncEnumerable<object?> asyncEnumerable)
                 {
-                    bool first = true;
-                    DateTime lastMessageSentUtc = DateTime.MinValue;
+                    DateTime lastMessageSent = DateTime.Now.AddSeconds(-1);
                     await foreach (object? subResult in asyncEnumerable)
                     {
                         // Only one message per second in one chat
                         // https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this
-                        if (first)
-                        {
-                            first = false;
-                        }
-                        else
-                        {
-                            const int millisecondsPerSecond = 1000;
-
-                            int delay = millisecondsPerSecond - (int)(DateTime.UtcNow - lastMessageSentUtc).TotalMilliseconds;
-                            if (delay > 0 && delay <= millisecondsPerSecond)
-                                await Task.Delay(delay);
-                        }
+                        const int millisecondsPerSecond = 1000;
+                        int delay = millisecondsPerSecond - (int)(DateTime.Now - lastMessageSent).TotalMilliseconds;
+                        if (delay > 0 && delay <= millisecondsPerSecond)
+                            await Task.Delay(delay);
 
                         await TryProcessResultAsync(command, subResult);
-                        lastMessageSentUtc = DateTime.UtcNow;
+                        lastMessageSent = DateTime.Now;
                     }
                 }
             }
