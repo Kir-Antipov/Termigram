@@ -6,6 +6,8 @@ namespace Termigram.SpecialValueProviders
 {
     public interface ISpecialValueProvider<TValue> : ISpecialValueProvider
     {
+        bool ISpecialValueProvider.CanProvideSpecialValue(ParameterInfo parameter, ICommand command) => parameter.ParameterType.IsAssignableFrom(typeof(TValue));
+
         bool TryProvideSpecialValue(ParameterInfo parameter, ICommand command, [MaybeNull]out TValue value);
 
         bool ISpecialValueProvider.TryProvideSpecialValue(ParameterInfo parameter, ICommand command, out object? value)

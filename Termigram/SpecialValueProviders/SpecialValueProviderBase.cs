@@ -5,6 +5,8 @@ namespace Termigram.SpecialValueProviders
 {
     public abstract class SpecialValueProviderBase : ISpecialValueProvider
     {
+        public virtual bool CanProvideSpecialValue(ParameterInfo parameter, ICommand command) => TryProvideSpecialValue(parameter, command, out _);
+
         public virtual bool TryProvideSpecialValue(ParameterInfo parameter, ICommand command, out object? value)
         {
             try
