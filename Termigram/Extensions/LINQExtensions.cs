@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Termigram.Extensions
 {
@@ -29,6 +30,13 @@ namespace Termigram.Extensions
                 yield return bucket;
             }
         }
+
+        public static T[] AsArrayOrEmpty<T>(this IEnumerable<T>? enumerable) => enumerable switch
+        {
+            T[] array => array,
+            null => Array.Empty<T>(),
+            _ => enumerable.ToArray()
+        };
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public static async IAsyncEnumerable<T> AsAsyncEnumerable<T>(this IEnumerable<T> source)
