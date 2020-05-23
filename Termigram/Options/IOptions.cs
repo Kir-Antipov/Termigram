@@ -30,11 +30,11 @@ namespace Termigram.Options
 
         IReadOnlyList<ICommandParser> Parsers { get; }
 
-        IReadOnlyList<IConverter> Converters { get; }
+        IReadOnlyList<IConverter>? Converters { get; }
 
-        IReadOnlyList<IDefaultValueProvider> DefaultValueProviders { get; }
+        IReadOnlyList<IDefaultValueProvider>? DefaultValueProviders { get; }
 
-        IReadOnlyList<ISpecialValueProvider> SpecialValueProviders { get; }
+        IReadOnlyList<ISpecialValueProvider>? SpecialValueProviders { get; }
 
         IReadOnlyList<ICommandLinker> Linkers { get; }
 
