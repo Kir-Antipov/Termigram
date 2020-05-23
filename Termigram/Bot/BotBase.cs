@@ -112,29 +112,22 @@ namespace Termigram.Bot
 
         protected virtual bool TryLinkCommand(ICommand command, [NotNullWhen(true)]out ICommandInfo? commandInfo)
         {
-            commandInfo = default;
-            for (int i = 0; i < Options.Linkers.Count; ++i)
-                for (int j = 0; j < Commands.Length; ++j)
-                    if (Options.Linkers[i].CanBeLinked(command, Commands[j]))
-                    {
-                        commandInfo = Commands[j];
-                        return true;
-                    }
+            commandInfo = Commands
+                .Select(info => (CommandInfo: info, Compatibility: Options.Linkers.Max(linker => linker.GetCompatibility(command, info, Options.Converters, Options.DefaultValueProviders, Options.SpecialValueProviders))))
+                .Where(x => x.Compatibility > 0)
+                .OrderByDescending(x => x.Compatibility)
+                .FirstOrDefault().CommandInfo;
 
-            if (DefaultCommand is { })
-            {
-                commandInfo = DefaultCommand;
-                return true;
-            }
+            commandInfo ??= DefaultCommand;
 
-            return false;
+            return commandInfo is { };
         }
 
         protected virtual async Task<object?> InvokeCommandAsync(ICommand command, ICommandInfo commandInfo)
         {
             try
             {
-                object? result = Options.CommandInvoker.Invoke(command, commandInfo, this);
+                object? result = Options.CommandInvoker.Invoke(command, commandInfo, this, Options.Converters, Options.DefaultValueProviders, Options.SpecialValueProviders);
 
                 if (result is Task task)
                 {
