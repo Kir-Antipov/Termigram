@@ -37,13 +37,12 @@ namespace Termigram.CommandLinkers
             if (command is IParametricCommand { Parameters: { } parameters })
             {
                 // min: 0
-                // max: notSpecialParameters.Length * 2
+                // max: notSpecialParameters.Length
                 double score = notSpecialParameters.Zip(parameters, (info, arg) => 
-                        converters.Any(converter => converter.CanConvert(arg, info.ParameterType)) ? 2d : 
-                        defaultValueProviders.Any(provider => provider.CanProvideDefaultValue(info)) ? 1d : 0d)
+                        converters.Any(converter => converter.CanConvert(arg, info.ParameterType)) ? 1d : 0d)
                     .Sum();
 
-                return score / 2 / notSpecialParameters.Length;
+                return score / notSpecialParameters.Length;
             }
 
             return notSpecialParameters.Length == 0 ? 1 : 0;
