@@ -81,5 +81,13 @@ namespace Termigram.Example
         public StickerMessage Sticker() => new StickerMessage("CAACAgIAAxkBAAIzjV5x6DLZatZVMyk7ZJJUUV4fanS6AALIAAPXawQWhI2aNfW4CsgYBA");
 
         public string Help() => "Just do whatever you want :)";
+
+        public string Overload(DateTime? date) => $"Date: {date}";
+
+        public string Overload(string begin, string end) => $"Messages: \"{begin}\" & \"{end}\"";
+
+        public string Overload(int number) => $"Number: {number}";
+
+        public string Overload(string message) => $"Message: \"{message}\"";
     }
 }
