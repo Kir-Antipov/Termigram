@@ -7,7 +7,10 @@ using Termigram.CommandExtractors;
 using Termigram.CommandInvokers;
 using Termigram.CommandLinkers;
 using Termigram.CommandParsers;
+using Termigram.Converters;
+using Termigram.DefaultValueProviders;
 using Termigram.ResultProcessors;
+using Termigram.SpecialValueProviders;
 
 namespace Termigram.Options
 {
@@ -21,6 +24,9 @@ namespace Termigram.Options
         public abstract ICommandExtractor CommandExtractor { get; }
         public abstract IReadOnlyList<UpdateType>? AllowedUpdates { get; }
         public abstract IReadOnlyList<ICommandParser> Parsers { get; }
+        public abstract IReadOnlyList<IConverter>? Converters { get; }
+        public abstract IReadOnlyList<IDefaultValueProvider>? DefaultValueProviders { get; }
+        public abstract IReadOnlyList<ISpecialValueProvider>? SpecialValueProviders { get; }
         public abstract IReadOnlyList<ICommandLinker> Linkers { get; }
         public abstract ICommandInvoker CommandInvoker { get; }
         public abstract IReadOnlyList<IResultProcessor> ResultProcessors { get; }

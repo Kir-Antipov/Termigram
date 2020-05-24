@@ -12,15 +12,15 @@ namespace Termigram.Options
         #endregion
 
         #region Init
-        public DefaultStateOptions(string token) : this(token, default, default) { }
+        public DefaultStateOptions(string token) : this(token ?? throw new ArgumentNullException(nameof(token)), default, default) { }
 
-        public DefaultStateOptions(string token, HttpClient httpClient) : this(token, httpClient, default) { }
+        public DefaultStateOptions(string token, HttpClient httpClient) : this(token ?? throw new ArgumentNullException(nameof(token)), httpClient ?? throw new ArgumentNullException(nameof(httpClient)), default) { }
 
-        public DefaultStateOptions(string token, IWebProxy proxy) : this(token, default, proxy) { }
+        public DefaultStateOptions(string token, IWebProxy proxy) : this(token ?? throw new ArgumentNullException(nameof(token)), default, proxy ?? throw new ArgumentNullException(nameof(proxy))) { }
 
         protected DefaultStateOptions(string token, HttpClient? httpClient, IWebProxy? proxy) : base(token, httpClient, proxy)
         {
-            StateFactory = () => new DefaultState();
+            StateFactory = Model.StateFactory ?? throw new ArgumentNullException(nameof(StateFactory));
         }
         #endregion
     }
