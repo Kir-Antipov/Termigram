@@ -211,7 +211,7 @@ As you can see, there's a possibility to pass parameters to the method by invoki
 > /sum 3 5 2<br>
 > Sum of **3**, **5** and **2** is 10
 
-There're some special values which can be provided by [`ISpecialValueProvider`](https://github.com/Kir-Antipov/Termigram/tree/master/Termigram/SpecialValueProviders/ISpecialValueProvider.cs)s:
+There're some inbuilt special values which can be provided by [`ISpecialValueProvider`](https://github.com/Kir-Antipov/Termigram/tree/master/Termigram/SpecialValueProviders/ISpecialValueProvider.cs)s:
 
  - (`User` *anyName*) - user who called the command
  - (`ChatId` *anyName*) - Id of the chat from which the message came. If chat id isn't available, user id will be returned
@@ -219,7 +219,32 @@ There're some special values which can be provided by [`ISpecialValueProvider`](
  - (`Message` *anyName*) - `Message` object associated with this command
  - (`ICommand` *anyName*) - this command info
 
-### 8. Exceptions
+### 8. Overloads
+
+```csharp
+public string Overload(DateTime? date) => $"Date: {date}";
+
+public string Overload(string begin, string end) => $"Messages: \"{begin}\" & \"{end}\"";
+
+public string Overload(int number) => $"Number: {number}";
+
+public string Overload(string message) => $"Message: \"{message}\"";
+```
+
+The bot is able to determine the most appropriate method's overload for the called command:
+
+> /overload 1<br>
+> Number: 1<br><br>
+> /overload 01.01.1970<br>
+> Date: 01.01.1970 00:00:00<br><br>
+> /overload String<br>
+> Message: "String"<br><br>
+> /overload String1 String2<br>
+> Messages: "String1" & "String2"<br><br>
+> /overload String1 String2 String3<br>
+> Messages: "String1" & "String2"<br><br>
+
+### 9. Exceptions
 
 Each exception is perceived as a user error, not an error of your code, since, from a semantic point of view, it was the user who could call the command in a wrong way. So these commands
 
@@ -235,7 +260,7 @@ will send an error message to the user who invoked the command.
 
 If you don't like this behavior, you can change it by providing another [`IResultProcessor`](https://github.com/Kir-Antipov/Termigram/tree/master/Termigram/ResultProcessors/IResultProcessor.cs) for `Exception` objects instead of [`ExceptionProcessor`](https://github.com/Kir-Antipov/Termigram/tree/master/Termigram/ResultProcessors/ExceptionProcessor.cs)
 
-### 9. Helpful methods
+### 10. Helpful methods
 
 [`BotBase`](https://github.com/Kir-Antipov/Termigram/tree/master/Termigram/Bot/BotBase.cs) has some helpful methods for inherited classes:
 
@@ -281,7 +306,7 @@ MainMenu = GenerateReplyKeyboardMarkup
 ```
  - `GenerateInlineKeyboardMarkup` -  Generates `InlineKeyboardMarkup` by command methods' names
 
-### 10. Starting the bot
+### 11. Starting the bot
 
 When your bot is ready, it remains just to create an instance of it and call the `RunAsync` method :)
 
