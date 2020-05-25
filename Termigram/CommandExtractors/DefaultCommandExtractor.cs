@@ -6,6 +6,7 @@ using Termigram.Bot;
 using Termigram.CommandInfos;
 using Termigram.Commands;
 using Termigram.Extensions;
+using Termigram.Models;
 
 namespace Termigram.CommandExtractors
 {
@@ -15,7 +16,7 @@ namespace Termigram.CommandExtractors
         {
             defaultCommand = botType
                 .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
-                .Select(x => new { Method = x, Attribute = x.GetCustomAttribute<DefaultCommandAttribute>() })
+                .Select(x => (Method: x, Attribute: x.GetCustomAttribute<DefaultCommandAttribute>()))
                 .Where(x => x.Attribute is { })
                 .Select(x => new DefaultCommandInfo(ExtractNames(x.Method, x.Method.GetCustomAttribute<DefaultCommandAttribute>(), x.Attribute), x.Method))
                 .FirstOrDefault();
@@ -33,9 +34,21 @@ namespace Termigram.CommandExtractors
             if (bindings.HasFlag(Bindings.MarkedAsCommand))
                 methods = methods.Where(x => x.Attribute is { });
           
-            return methods
+            ICommandInfo[] commands = methods
                 .Select(x => new DefaultCommandInfo(ExtractNames(x.Method, x.Method.GetCustomAttribute<DefaultCommandAttribute>(), x.Attribute), x.Method))
                 .ToArray();
+
+            var groupedCommands = commands
+                .Select((x, i) => (Command: x, Index: i))
+                .GroupBy(x => x.Command.Names, EqualityChecker<IEnumerable<string>>.Create((a, b) => a.Any(aElement => b.Contains(aElement))))
+                .Where(x => x.Count() > 1)
+                .Select(group => (Group: group, Names: group.SelectMany(x => x.Command.Names).Distinct().OrderBy(x => x == group.First().Command.Method.Name).ThenByDescending(x => x.Length).ToArray()));
+
+            foreach (var (group, names) in groupedCommands)
+                foreach (var (command, i) in group)
+                    commands[i] = new DefaultCommandInfo(names, command.Method);
+
+            return commands;
         }
 
         private static IReadOnlyList<string> ExtractNames(MethodInfo method, DefaultCommandAttribute? defaultAttribute, CommandAttribute? commandAttribute)
