@@ -144,24 +144,6 @@ namespace Termigram.Bot
             }
         }
 
-        protected virtual ReplyKeyboardMarkup GenerateReplyKeyboardMarkup(params string[] methodNames) =>
-            GenerateReplyKeyboardMarkup(itemsInRow: 2, methodNames: methodNames);
-        
-        protected virtual ReplyKeyboardMarkup GenerateReplyKeyboardMarkup(int itemsInRow = 2, bool resizeKeyboard = true, bool oneTimeKeyboard = false, params string[] methodNames) =>
-            GenerateReplyKeyboardMarkup(methodNames.Batch(itemsInRow), resizeKeyboard, oneTimeKeyboard);
-
-        protected virtual ReplyKeyboardMarkup GenerateReplyKeyboardMarkup(IEnumerable<IEnumerable<string>> commandNames, bool resizeKeyboard = true, bool oneTimeKeyboard = false) =>
-            new ReplyKeyboardMarkup(commandNames.Select(row => row.Select(commandName => new KeyboardButton(Commands.First(x => x.Method.Name == commandName).Name))), resizeKeyboard, oneTimeKeyboard);
-        
-        protected virtual InlineKeyboardMarkup GenerateInlineKeyboardMarkup(params string[] methodNames) =>
-            GenerateInlineKeyboardMarkup(itemsInRow: 2, methodNames: methodNames);
-        
-        protected virtual InlineKeyboardMarkup GenerateInlineKeyboardMarkup(int itemsInRow = 2, params string[] methodNames) =>
-            GenerateInlineKeyboardMarkup(methodNames.Batch(itemsInRow));
-
-        protected virtual InlineKeyboardMarkup GenerateInlineKeyboardMarkup(IEnumerable<IEnumerable<string>> commandNames) =>
-            new InlineKeyboardMarkup(commandNames.Select(row => row.Select(commandName => Commands.First(x => x.Method.Name == commandName).Name).Select(commandName => new InlineKeyboardButton { Text = commandName, CallbackData = commandName })));
-
         protected virtual async Task<bool> TryProcessResultAsync(ICommand command, object? result)
         {
             for (int i = 0; i < Options.ResultProcessors.Count; ++i)
@@ -171,6 +153,12 @@ namespace Termigram.Bot
             return false;
         }
 
+        public override bool Equals(object obj) => obj is IBot bot && bot.Options.Token == Options.Token;
+        public override int GetHashCode() => Options.Token.GetHashCode();
+        public override string ToString() => Options.Token;
+        #endregion
+
+        #region WaitForUpdateAsync
         protected virtual Task<Update?> WaitForUpdateAsync(User user, CancellationToken cancellationToken = default) =>
             WaitForResultAsync(AwaitingUpdateFromUser, user.Id, cancellationToken);
 
@@ -235,10 +223,26 @@ namespace Termigram.Bot
 
             return false;
         }
+        #endregion
 
-        public override bool Equals(object obj) => obj is IBot bot && bot.Options.Token == Options.Token;
-        public override int GetHashCode() => Options.Token.GetHashCode();
-        public override string ToString() => Options.Token;
+        #region IReplyMarkup Generators
+        protected virtual ReplyKeyboardMarkup GenerateReplyKeyboardMarkup(params string[] methodNames) =>
+            GenerateReplyKeyboardMarkup(itemsInRow: 2, methodNames: methodNames);
+
+        protected virtual ReplyKeyboardMarkup GenerateReplyKeyboardMarkup(int itemsInRow = 2, bool resizeKeyboard = true, bool oneTimeKeyboard = false, params string[] methodNames) =>
+            GenerateReplyKeyboardMarkup(methodNames.Batch(itemsInRow), resizeKeyboard, oneTimeKeyboard);
+
+        protected virtual ReplyKeyboardMarkup GenerateReplyKeyboardMarkup(IEnumerable<IEnumerable<string>> commandNames, bool resizeKeyboard = true, bool oneTimeKeyboard = false) =>
+            new ReplyKeyboardMarkup(commandNames.Select(row => row.Select(commandName => new KeyboardButton(Commands.First(x => x.Method.Name == commandName).Name))), resizeKeyboard, oneTimeKeyboard);
+
+        protected virtual InlineKeyboardMarkup GenerateInlineKeyboardMarkup(params string[] methodNames) =>
+            GenerateInlineKeyboardMarkup(itemsInRow: 2, methodNames: methodNames);
+
+        protected virtual InlineKeyboardMarkup GenerateInlineKeyboardMarkup(int itemsInRow = 2, params string[] methodNames) =>
+            GenerateInlineKeyboardMarkup(methodNames.Batch(itemsInRow));
+
+        protected virtual InlineKeyboardMarkup GenerateInlineKeyboardMarkup(IEnumerable<IEnumerable<string>> commandNames) =>
+            new InlineKeyboardMarkup(commandNames.Select(row => row.Select(commandName => Commands.First(x => x.Method.Name == commandName).Name).Select(commandName => new InlineKeyboardButton { Text = commandName, CallbackData = commandName })));
         #endregion
     }
 }
