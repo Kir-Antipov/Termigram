@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Reflection;
 
 namespace Termigram.Converters
@@ -29,7 +30,7 @@ namespace Termigram.Converters
                 }
                 else
                 {
-                    result = Convert.ChangeType(value, resultType);
+                    result = Convert.ChangeType(value, resultType, CultureInfo.InvariantCulture);
                     return true;
                 }
             }
