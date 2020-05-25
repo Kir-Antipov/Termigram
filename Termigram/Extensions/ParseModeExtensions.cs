@@ -33,10 +33,6 @@ namespace Termigram.Extensions
                 if (text.Contains(HtmlTags[i].Open) || text.Contains(HtmlTags[i].Close))
                     return ParseMode.Html;
 
-            for (int i = 0; i < MarkdownTags.Length; ++i)
-                if (MarkdownTags[i].IsMatch(text))
-                    return ParseMode.MarkdownV2;
-
             return ParseMode.Default;
         }
     }
