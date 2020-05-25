@@ -9,7 +9,7 @@ namespace Termigram.Extensions
     {
         public static IEnumerable<T> LoadAllImplementations<T>() => Assembly.GetExecutingAssembly().ExportedTypes
             .Where(typeof(T).IsAssignableFrom)
-            .Where(x => !x.IsAbstract && !x.IsInterface)
+            .Where(x => !x.IsAbstract && !x.IsInterface && !x.IsGenericTypeDefinition)
             .Select(x =>
             {
                 ConstructorInfo constructor = x.GetConstructor(Type.EmptyTypes);
