@@ -244,6 +244,52 @@ The bot is able to determine the most appropriate method's overload for the call
 > /overload String1 String2 String3<br>
 > Messages: "String1" & "String2"<br><br>
 
+<br>
+Overloads are those methods that have the same command names, but they themselves aren't required to bear the same method name, so
+
+these are overloads:
+
+```csharp
+[Command("RyanReynolds")]
+public string Deadpool(...) => "Chimichangas";
+
+[Command("RyanReynolds")]
+public string WadeWilson(...) => "Chimichangas";
+```
+
+and these are not:
+
+```csharp
+[Command("ChristianBale")]
+public string Batman(...) => "I'm the night";
+
+[Command("BenAffleck")]
+public string Batman(...) => "I'm the night";
+```
+
+<br>
+If you define a lot of aliases for a command, there's no need to duplicate them for each overload: it's sufficient that the overloads have just one common name:
+
+```csharp
+[Command(nameof(Overload), "alias0", "alias1")]
+public string Overload(...) => ...;
+
+[Command(nameof(Overload), "alias2")]
+public string Overload(...) => ...;
+
+[Command]
+public string Overload(...) => ...;
+
+public string Overload(...) => ...;
+```
+
+Each of these overloads can be triggered by any of these names:
+
+> Overload<br>
+> alias0<br>
+> alias1<br>
+> alias2<br>
+
 ### 9. Exceptions
 
 Each exception is perceived as a user error, not an error of your code, since, from a semantic point of view, it was the user who could call the command in a wrong way. So these commands
