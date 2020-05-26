@@ -20,22 +20,22 @@ namespace Termigram.Example
 
         public TestBot(IStateOptions options) : base(options) 
         {
-            MainMenu = GenerateReplyKeyboardMarkup
+            MainMenu = ReplyKeyboard().Columns(2).Build(ReplyButtons
             (
                 nameof(Lucky),  nameof(Memento),
                 nameof(Sum),    nameof(Sticker),
                         nameof(Help)
-            );
+            ));
         }
 
         [DefaultCommand]
         public static string Default() => "Sorry, I have no such command";
 
         public TextMessage Start() =>
-            new TextMessage(@"Hi\! I'm a test robot created to demonstrate the capabilities of [Termigram](https://github.com/Kir-Antipov/Termigram)\!", replyMarkup: MainMenu);
+            new TextMessage(@"Hi! I'm a test robot created to demonstrate the capabilities of <a href=""https://github.com/Kir-Antipov/Termigram"">Termigram</a>!", replyMarkup: MainMenu);
 
         [Command("Sum\u00A03\u00A0values", "sum")]
-        public string Sum(int a, int b, int c = 1) => $"Sum of *{a}*, *{b}* and *{c}* is {a + b + c}";
+        public string Sum(int a, int? b = null, int c = 1) => $"Sum of <b>{a}</b>, <b>{b ?? 0}</b> and <b>{c}</b> is {a + (b ?? 0) + c}";
 
         [Command("Remember\u00A0value", "memento")]
         public string Memento(User user, string? data = null)
@@ -60,7 +60,7 @@ namespace Termigram.Example
             int guessed = new Random().Next(min, max + 1);
 
             yield return "Let's see how lucky you are!";
-            yield return $@"I've made a number from *{min}* to *{max}*\. Try to guess it\!";
+            yield return $@"I've made a number from <b>{min}</b> to <b>{max}</b>. Try to guess it!";
 
             string? userAssumption = await WaitForAnswerAsync(user);
 
@@ -73,7 +73,7 @@ namespace Termigram.Example
             }
             else
             {
-                yield return $@"This time you're out of luck\. I figured out the number *{guessed}*";
+                yield return $@"This time you're out of luck. I figured out the number <b>{guessed}</b>";
             }
         }
 
