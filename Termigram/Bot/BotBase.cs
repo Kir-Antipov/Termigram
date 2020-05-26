@@ -230,6 +230,10 @@ namespace Termigram.Bot
         #region IReplyMarkup Generators
         protected KeyboardButton ReplyButton(string methodName) => new KeyboardButton(Commands.First(x => x.Method.Name == methodName).Name);
 
+        protected IEnumerable<KeyboardButton> ReplyButtons(params string[] methodNames) => Array.ConvertAll(methodNames, ReplyButton);
+
+        protected IEnumerable<KeyboardButton> ReplyButtons(IEnumerable<string> methodNames) => methodNames.Select(ReplyButton);
+
         protected ReplyKeyboardMarkupBuilder ReplyKeyboard() => new ReplyKeyboardMarkupBuilder();
 
         protected ReplyKeyboardMarkup ReplyKeyboard(IEnumerable<KeyboardButton> buttons) => new ReplyKeyboardMarkupBuilder().Build(buttons);
@@ -244,6 +248,10 @@ namespace Termigram.Bot
 
 
         protected InlineKeyboardButton InlineButton(string methodName) => InlineTextButton(null, methodName, Array.Empty<object>());
+
+        protected IEnumerable<InlineKeyboardButton> InlineButtons(params string[] methodNames) => Array.ConvertAll(methodNames, InlineButton);
+
+        protected IEnumerable<InlineKeyboardButton> InlineButtons(IEnumerable<string> methodNames) => methodNames.Select(InlineButton);
 
         protected InlineKeyboardButton InlineButton(string methodName, params object?[] args) => InlineTextButton(null, methodName, args);
 
