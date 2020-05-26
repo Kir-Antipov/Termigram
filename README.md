@@ -341,16 +341,18 @@ public async IAsyncEnumerable<TextMessage> Lucky(User user)
 
 ```
  
- - `GenerateReplyKeyboardMarkup` - Generates `ReplyKeyboardMarkup` by command methods' names:
+ - `ReplyKeyboard` - Generates `ReplyKeyboardMarkup` by command methods' names:
 ```csharp
-MainMenu = GenerateReplyKeyboardMarkup
+MainMenu = ReplyKeyboard
 (
-    nameof(Lucky),  nameof(Memento),
-    nameof(Sum),    nameof(Sticker),
-            nameof(Help)
+    nameof(Lucky),
+    nameof(Memento),
+    nameof(Sum),
+    nameof(Sticker),
+    nameof(Help)
 );
 ```
- - `GenerateInlineKeyboardMarkup` -  Generates `InlineKeyboardMarkup` by command methods' names
+ - `InlineKeyboard` -  Generates `InlineKeyboardMarkup` by command methods' names
 
 ### 11. Starting the bot
 
