@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Termigram.CommandInfos
@@ -8,6 +9,8 @@ namespace Termigram.CommandInfos
         #region Var
         public override IReadOnlyList<string> Names { get; }
 
+        public override string ShortName { get; }
+
         public override MethodInfo Method { get; }
         #endregion
 
@@ -15,6 +18,7 @@ namespace Termigram.CommandInfos
         public DefaultCommandInfo(IReadOnlyList<string> names, MethodInfo method)
         {
             Names = names;
+            ShortName = names.OrderBy(x => x.Length).First();
             Method = method;
         }
         #endregion

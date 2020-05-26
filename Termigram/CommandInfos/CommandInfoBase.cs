@@ -7,6 +7,9 @@ namespace Termigram.CommandInfos
     {
 		#region Var
         public abstract IReadOnlyList<string> Names { get; }
+        
+        public abstract string ShortName { get; }
+        string ICommandInfo.ShortName => ShortName;
 
         public abstract MethodInfo Method { get; }
         #endregion
