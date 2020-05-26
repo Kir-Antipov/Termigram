@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -15,6 +16,7 @@ using Termigram.CommandInfos;
 using Termigram.Commands;
 using Termigram.Extensions;
 using Termigram.Options;
+using Termigram.ReplyMarkupBuilders;
 
 namespace Termigram.Bot
 {
@@ -226,23 +228,47 @@ namespace Termigram.Bot
         #endregion
 
         #region IReplyMarkup Generators
-        protected virtual ReplyKeyboardMarkup GenerateReplyKeyboardMarkup(params string[] methodNames) =>
-            GenerateReplyKeyboardMarkup(itemsInRow: 2, methodNames: methodNames);
+        protected KeyboardButton ReplyButton(string methodName) => new KeyboardButton(Commands.First(x => x.Method.Name == methodName).Name);
 
-        protected virtual ReplyKeyboardMarkup GenerateReplyKeyboardMarkup(int itemsInRow = 2, bool resizeKeyboard = true, bool oneTimeKeyboard = false, params string[] methodNames) =>
-            GenerateReplyKeyboardMarkup(methodNames.Batch(itemsInRow), resizeKeyboard, oneTimeKeyboard);
+        protected ReplyKeyboardMarkupBuilder ReplyKeyboard() => new ReplyKeyboardMarkupBuilder();
 
-        protected virtual ReplyKeyboardMarkup GenerateReplyKeyboardMarkup(IEnumerable<IEnumerable<string>> commandNames, bool resizeKeyboard = true, bool oneTimeKeyboard = false) =>
-            new ReplyKeyboardMarkup(commandNames.Select(row => row.Select(commandName => new KeyboardButton(Commands.First(x => x.Method.Name == commandName).Name))), resizeKeyboard, oneTimeKeyboard);
+        protected ReplyKeyboardMarkup ReplyKeyboard(IEnumerable<KeyboardButton> buttons) => new ReplyKeyboardMarkupBuilder().Build(buttons);
 
-        protected virtual InlineKeyboardMarkup GenerateInlineKeyboardMarkup(params string[] methodNames) =>
-            GenerateInlineKeyboardMarkup(itemsInRow: 2, methodNames: methodNames);
+        protected ReplyKeyboardMarkup ReplyKeyboard(IEnumerable<IEnumerable<KeyboardButton>> buttons) => new ReplyKeyboardMarkupBuilder().Build(buttons);
 
-        protected virtual InlineKeyboardMarkup GenerateInlineKeyboardMarkup(int itemsInRow = 2, params string[] methodNames) =>
-            GenerateInlineKeyboardMarkup(methodNames.Batch(itemsInRow));
+        protected ReplyKeyboardMarkup ReplyKeyboard(params KeyboardButton[] buttons) => new ReplyKeyboardMarkupBuilder().Build(buttons);
 
-        protected virtual InlineKeyboardMarkup GenerateInlineKeyboardMarkup(IEnumerable<IEnumerable<string>> commandNames) =>
-            new InlineKeyboardMarkup(commandNames.Select(row => row.Select(commandName => Commands.First(x => x.Method.Name == commandName).Name).Select(commandName => new InlineKeyboardButton { Text = commandName, CallbackData = commandName })));
+        protected ReplyKeyboardMarkup ReplyKeyboard(params string[] methodNames) => new ReplyKeyboardMarkupBuilder().Build(Array.ConvertAll(methodNames, ReplyButton));
+
+        protected ReplyKeyboardMarkup ReplyKeyboard(IEnumerable<string> methodNames) => new ReplyKeyboardMarkupBuilder().Build(methodNames.Select(ReplyButton));
+
+
+        protected InlineKeyboardButton InlineButton(string methodName) => InlineTextButton(null, methodName, Array.Empty<object>());
+
+        protected InlineKeyboardButton InlineButton(string methodName, params object?[] args) => InlineTextButton(null, methodName, args);
+
+        protected InlineKeyboardButton InlineTextButton(string? text, string methodName, params object?[] args)
+        {
+            string combinedArgs = string.Join(' ', args);
+            ICommandInfo commandInfo = Commands.First(x => x.Method.Name == methodName);
+            StringBuilder callbackData = new StringBuilder(commandInfo.ShortName.Length + 1 + combinedArgs.Length).Append(commandInfo.ShortName);
+            if (combinedArgs.Length != 0)
+                callbackData.Append(' ').Append(callbackData);
+
+            return new InlineKeyboardButton { Text = text ?? commandInfo.Name, CallbackData = callbackData.ToString() };
+        }
+
+        protected InlineKeyboardMarkupBuilder InlineKeyboard() => new InlineKeyboardMarkupBuilder();
+
+        protected InlineKeyboardMarkup InlineKeyboard(IEnumerable<InlineKeyboardButton> buttons) => new InlineKeyboardMarkupBuilder().Build(buttons);
+
+        protected InlineKeyboardMarkup InlineKeyboard(IEnumerable<IEnumerable<InlineKeyboardButton>> buttons) => new InlineKeyboardMarkupBuilder().Build(buttons);
+
+        protected InlineKeyboardMarkup InlineKeyboard(params InlineKeyboardButton[] buttons) => new InlineKeyboardMarkupBuilder().Build(buttons);
+
+        protected InlineKeyboardMarkup InlineKeyboard(params string[] methodNames) => new InlineKeyboardMarkupBuilder().Build(Array.ConvertAll(methodNames, InlineButton));
+
+        protected InlineKeyboardMarkup InlineKeyboard(IEnumerable<string> methodNames) => new InlineKeyboardMarkupBuilder().Build(methodNames.Select(InlineButton));
         #endregion
     }
 }
