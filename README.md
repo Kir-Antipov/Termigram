@@ -153,6 +153,7 @@ The value returned by the method processes using one of the [`IResultProcessors`
 - [`AudioMessage`](https://github.com/Kir-Antipov/Termigram/tree/master/Termigram/Messages/AudioMessage.cs)
 - [`ChatActionMessage`](https://github.com/Kir-Antipov/Termigram/tree/master/Termigram/Messages/ChatActionMessage.cs)
 - [`ContactMessage`](https://github.com/Kir-Antipov/Termigram/tree/master/Termigram/Messages/ContactMessage.cs)
+- [`DiceMessage`](https://github.com/Kir-Antipov/Termigram/tree/master/Termigram/Messages/DiceMessage.cs)
 - [`DocumentMessage`](https://github.com/Kir-Antipov/Termigram/tree/master/Termigram/Messages/DocumentMessage.cs)
 - [`GameMessage`](https://github.com/Kir-Antipov/Termigram/tree/master/Termigram/Messages/GameMessage.cs)
 - [`LocationMessage`](https://github.com/Kir-Antipov/Termigram/tree/master/Termigram/Messages/LocationMessage.cs)
@@ -199,7 +200,7 @@ public async Task<TextMessage> SendAsync()
 ### 7. Parameters
 
 ```csharp
-public string Sum(int a, int b, int c = 1) => $"Sum of *{a}*, *{b}* and *{c}* is {a + b + c}";
+public string Sum(int a, int? b = null, int c = 1) => $"Sum of <b>{a}</b>, <b>{b ?? 0}</b> and <b>{c}</b> is {a + (b ?? 0) + c}";
 ```
 
 As you can see, there's a possibility to pass parameters to the method by invoking a command. 
@@ -322,7 +323,7 @@ public async IAsyncEnumerable<TextMessage> Lucky(User user)
     int guessed = new Random().Next(min, max + 1);
 
     yield return "Let's see how lucky you are!";
-    yield return $@"I've made a number from *{min}* to *{max}*\. Try to guess it\!";
+    yield return $@"I've made a number from <b>{min}</b> to <b>{max}</b>. Try to guess it!";
 
     string? userAssumption = await WaitForAnswerAsync(user);
 
@@ -335,7 +336,7 @@ public async IAsyncEnumerable<TextMessage> Lucky(User user)
     }
     else
     {
-        yield return $@"This time you're out of luck\. I figured out the number *{guessed}*";
+        yield return $@"This time you're out of luck. I figured out the number <b>{guessed}</b>";
     }
 }
 
